@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>KebaBNB: Binance x Heretics - Hackaton</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="shortcut icon" type="image/png" href="./img/ai_generated_logo_kebabnb_small.png">
+  <style>
+
+  </style>
+  <script src="./js/ethers-5.7.2.umd.min.js"></script>
+</head>
+<body>
+  <div class="navbar_custom">
+    <img src="./img/ai_generated_logo_kebabnb.png" style="height: 40px;" alt="logo">
+    <div class="nav-right">
+      <div id="wallet-address"></div>
+      <button id="connect-wallet-btn" onclick="connectBinanceChainWallet()" class="web_btn">Connect wallet</button>
+    </div>
+    <div style="clear:both"></div>
+  </div>
+  <div class="center">
+    <div id="stream_video">
+    </div>
+    <div id="stake-container" style="display: none; text-align:center; margin-top:15px;">
+      <button id="stake-button" class="web_btn" disabled>Stake</button>
+    </div>
+  </div>
+  <script>
+  function loadStream(){
+    // Get the video ID, the dimensions of the player, and the current domain
+    const videoId = "1675341712";
+    const playerHeight = "378";
+    const playerWidth = "620";
+    const domain = document.domain;
+
+    // Create the iframe element
+    const iframe = document.createElement("iframe");
+
+    // Set the src attribute of the iframe to the URL of the Twitch video
+    //Replace ?video= for ?channel=[CHANNEL] to show a creator like teamheretics. You should set videoId as the channel you want to show.
+    iframe.src = `https://player.twitch.tv/?video=${videoId}&parent=${domain}`;
+
+    // Set the dimensions of the player
+    iframe.height = playerHeight;
+    iframe.width = playerWidth;
+
+    // Set the other attributes of the iframe
+    iframe.frameborder = "0";
+    iframe.scrolling = "no";
+    iframe.allowfullscreen = "true";
+
+    // Get the div element with the ID "stream_video"
+    const streamVideoDiv = document.getElementById("stream_video");
+
+    // Add the iframe to the div
+    streamVideoDiv.appendChild(iframe);
+  }
+  async function connectBinanceChainWallet() {
+    if (typeof  window.ethereum !== undefined) {
+      //Open and connect web3 wallet
+      await window.ethereum.enable()
+      const provider = new ethers.getDefaultProvider("https://bsc-dataseed.binance.org/");
+      let address = await window.ethereum.request({method: 'eth_requestAccounts'});
+      //Address should be fetched here
+      console.log("Address connected: "+address);
+      let networkId = await provider.getNetwork();
+      //We can verify connected chain here
+      console.log("Network ID: "+networkId.chainId);
+      //Allow signing with provided address. Address needs to be converted to string.
+      let signer = await provider.getSigner(address.toString());
+      await signer.getAddress().then(addy => {
+        //If success we will be able to interact with smart-contracts.
+        //Apply UI changes once connected
+        let shortAddress = addy.substring(0, 6) + "..." + addy.substring(addy.length - 4);
+        document.getElementById('wallet-address').innerHTML = "Wallet connected: "+shortAddress;
+        document.getElementById('connect-wallet-btn').style.display = 'none';
+        document.getElementById('wallet-address').style.display = 'block';
+        document.getElementById('stake-container').style.display = 'block';
+        document.getElementById('stake-button').removeAttribute('disabled');
+      });
+    }
+  }
+  window.onload = loadStream;
+  </script>
+</body>
+</html>
