@@ -11,19 +11,29 @@
   <script src="./js/ethers-5.7.2.umd.min.js"></script>
 </head>
 <body>
-  <div class="navbar_custom">
-    <img src="./img/ai_generated_logo_kebabnb.png" style="height: 40px;" alt="logo">
-    <div class="nav-right">
-      <div id="wallet-address"></div>
-      <button id="connect-wallet-btn" onclick="connectBinanceChainWallet()" class="web_btn">Connect wallet</button>
+  <div id="fuegos-artificiales">
+    <div class="navbar_custom">
+      <img src="./img/ai_generated_logo_kebabnb.png" style="height: 40px;" alt="logo">
+      <div class="nav-right">
+        <div id="wallet-address"></div>
+        <button id="connect-wallet-btn" onclick="connectBinanceChainWallet()" class="web_btn">Connect wallet</button>
+      </div>
+      <div style="clear:both"></div>
     </div>
-    <div style="clear:both"></div>
-  </div>
-  <div class="center">
-    <div id="stream_video">
-    </div>
-    <div id="stake-container" style="display: none; text-align:center; margin-top:15px;">
-      <button id="stake-button" class="web_btn" disabled>Stake</button>
+    <div class="center">
+      <div id="stream_video">
+      </div>
+      <div id="stake-container" class="centered-buttons">
+        <button id="stake-button" class="web_btn" disabled>Stake <span id="stakepower"></span></button>
+      </div>
+      <div id="admin-container" class="admin-section centered-buttons" style="display:none;">
+        <h4 class="admin-title">Admin section</h4>
+        <button id="open-staking-btn" class="web_btn">Open Staking</button>
+        <button id="boost-staking-btn" class="web_btn web_btn_red" disabled>Boost Staking</button>
+        <button id="stop-boost-staking-btn" style="display:none;" class="web_btn web_btn_red" disabled>Stop Boost</button>
+        <button id="close-staking-btn" class="web_btn" disabled>Close Staking</button>
+        <p style="color: white;font-style: italic;">Above buttons represent a proof of concept</p>
+      </div>
     </div>
   </div>
   <script>
@@ -56,32 +66,9 @@
     // Add the iframe to the div
     streamVideoDiv.appendChild(iframe);
   }
-  async function connectBinanceChainWallet() {
-    if (typeof  window.ethereum !== undefined) {
-      //Open and connect web3 wallet
-      await window.ethereum.enable()
-      const provider = new ethers.getDefaultProvider("https://bsc-dataseed.binance.org/");
-      let address = await window.ethereum.request({method: 'eth_requestAccounts'});
-      //Address should be fetched here
-      console.log("Address connected: "+address);
-      let networkId = await provider.getNetwork();
-      //We can verify connected chain here
-      console.log("Network ID: "+networkId.chainId);
-      //Allow signing with provided address. Address needs to be converted to string.
-      let signer = await provider.getSigner(address.toString());
-      await signer.getAddress().then(addy => {
-        //If success we will be able to interact with smart-contracts.
-        //Apply UI changes once connected
-        let shortAddress = addy.substring(0, 6) + "..." + addy.substring(addy.length - 4);
-        document.getElementById('wallet-address').innerHTML = "Wallet connected: "+shortAddress;
-        document.getElementById('connect-wallet-btn').style.display = 'none';
-        document.getElementById('wallet-address').style.display = 'block';
-        document.getElementById('stake-container').style.display = 'block';
-        document.getElementById('stake-button').removeAttribute('disabled');
-      });
-    }
-  }
   window.onload = loadStream;
   </script>
+  <script src="./js/wallet_functions.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 </body>
 </html>
