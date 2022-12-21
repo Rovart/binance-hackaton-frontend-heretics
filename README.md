@@ -18,9 +18,14 @@ The project should meet the following achievements:
 - Allow Heretics and allowed bnb addresses (moderators) to open/close the staking period.
 - Allow Heretics and allowed bnb addresses (moderators) to boost staking rewards during selected periods of time (ex: Ads break).
 
+## Demo
+
+You can play the proof of concept through: https://myneuronal.com/binancehackaton/
+
 ## Requirements
 
 To run this proof of concept, the following requirements are needed:
 
 - A binance chain address
 - A wallet capable of executing web3 events on browser (Metamask, TrustWallet)
+- A website or server running Apache
