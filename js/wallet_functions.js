@@ -47,6 +47,10 @@ async function connectBinanceChainWallet() {
         if(running_intervals.length > 0){
           clearInterval(running_intervals[(running_intervals.length-1)]);
         }
+        document.getElementById('stakepower').innerHTML = "";
+      });
+      document.getElementById("stake-button").addEventListener("click", function() {
+        document.getElementById('stake-button').disabled = true;
       });
       document.getElementById("boost-staking-btn").addEventListener("click", function() {
         //Add background effect
@@ -84,6 +88,7 @@ async function connectBinanceChainWallet() {
 }
 function random_boost(){
   //Reseteamos velocidad y staking delta
+  document.getElementById('stake-button').disabled = false;
   window.pJSDom[0].pJS.particles.move.speed = 3;
   if(running_intervals.length > 0){
     clearInterval(running_intervals[(running_intervals.length-1)]);
