@@ -20,7 +20,8 @@ The project should meet the following achievements:
 
 ## Demo
 
-You can play the proof of concept through: https://myneuronal.com/binancehackaton/
+- You can play the proof of concept through: https://myneuronal.com/binancehackaton/
+- Find the presentation slides here: https://docs.google.com/presentation/d/1VxVrd1rvFFqNlsHgJMEcyDsVFRfAttZ7fSR5qVwG8oc/edit#slide=id.p
 
 ## Requirements
 
